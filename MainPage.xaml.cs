@@ -1,24 +1,19 @@
-﻿namespace WorkTimeTracker
+﻿using WorkTimeTracker.ViewModels;
+
+namespace WorkTimeTracker.Views;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    public MainPage(MainPageViewModel viewModel)
     {
-        int count = 0;
+        InitializeComponent();
+        BindingContext = viewModel;
 
-        public MainPage()
+        // Atualiza hora e data
+        Dispatcher.StartTimer(TimeSpan.FromSeconds(1), () =>
         {
-            InitializeComponent();
-        }
-
-        private void OnCounterClicked(object? sender, EventArgs e)
-        {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
-        }
+            viewModel.UpdateDateTime(); // método que atualiza Data/Hora no ViewModel
+            return true;
+        });
     }
 }
