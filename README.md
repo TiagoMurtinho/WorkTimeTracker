@@ -9,6 +9,22 @@ A simple, offline Android app built with .NET MAUI for tracking work hours. Desi
   - Large elapsed time counter in the center  
   - Single START/STOP button that changes color and text dynamically  
   - Timer logic integrated in the ViewModel  
+  - On stopping, a modal allows selecting a **WorkType** and shows a summary of hours and earnings  
+  - Work sessions are saved in the local SQLite database  
+
+- **Work Types Management (Settings Page)**  
+  - CRUD operations for work types: create, edit, delete  
+  - Each WorkType includes a **name** and **hourly rate**  
+  - Modal dialogs for creating/editing WorkTypes  
+  - CollectionView shows all WorkTypes with edit/delete buttons  
+  - Displays salary per hour in the list  
+
+- **Management Page (Calendar)**  
+  - Calendar view organized by month  
+  - Defaults to the current month  
+  - Displays all days in the month  
+  - Days with work sessions are visually highlighted  
+  - Selecting a day opens a popup summary showing hours worked and total earnings  
 
 - **Real-time updates**  
   - Date and time update every second  
@@ -16,28 +32,31 @@ A simple, offline Android app built with .NET MAUI for tracking work hours. Desi
 
 - **MVVM Architecture**  
   - `MainPageViewModel` handles timer logic, date/time, and button state  
+  - `SettingsPageViewModel` handles WorkTypes CRUD  
+  - `ManagementPageViewModel` handles calendar days, highlighting, and daily summaries  
   - Bindings use `x:DataType` for compiled bindings and better performance  
 
 ## Technical Stack
 
 - **.NET MAUI** (C#)  
 - MVVM pattern with **CommunityToolkit.Mvvm**  
-- Local SQLite database ready (not yet connected to UI)  
+- Local SQLite database for WorkTypes and WorkSessions  
 - Modern UI with `Border`, large typography, and stylized buttons  
 - Fully offline, no authentication, no cloud  
 
 ## Project Structure
 
-- `Views/` → MainPage UI  
-- `ViewModels/` → MainPageViewModel  
+- `Views/` → MainPage, SettingsPage, ManagementPage UI  
+- `ViewModels/` → MainPageViewModel, SettingsPageViewModel, ManagementPageViewModel  
+- `Models/` → WorkType, WorkSession, CalendarDay, MonthlyReport  
 - `Resources/` → Fonts, images, splash screens  
 - `Platforms/` → Android-specific setup  
 
 ## Next Steps
 
-- Implement **Work Types management page** (CRUD for types of work)  
-- Implement **Settings / Summary page**  
-- Connect the **SQLite database** for saving sessions  
+- Add detailed daily and monthly summaries in ManagementPage  
+- Optional: sound or haptic feedback on timer events  
+- Improve calendar UI with more styling and navigation between months  
 
 ## Getting Started
 
