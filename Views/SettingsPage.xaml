@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Name="SettingsPageRoot"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:WorkTimeTracker.ViewModels"
+             xmlns:models="clr-namespace:WorkTimeTracker.Models"
+             x:Class="WorkTimeTracker.Views.SettingsPage"
+             x:DataType="vm:SettingsPageViewModel"
+             Title="Definições"
+             BackgroundColor="White">
+
+    <Grid Padding="20" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="10">
+
+        <!-- Título -->
+        <Label Grid.Row="0" Text="Configurações" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+
+        <!-- Subtítulo -->
+        <Label Grid.Row="1" Text="Aqui você pode ajustar seus trabalhos." FontSize="18" />
+
+        <!-- Botão Adicionar -->
+        <Button Grid.Row="2" Text="Adicionar trabalho" Command="{Binding AddCommand}" />
+
+        <!-- CollectionView ocupa toda a altura restante -->
+        <CollectionView Grid.Row="3" ItemsSource="{Binding WorkTypes}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:WorkType"
+                      xmlns:models="clr-namespace:WorkTimeTracker.Models">
+
+                    <Grid Padding="10" ColumnDefinitions="*,Auto,Auto">
+
+                        <!-- NOME -->
+                        <Label Text="{Binding Name}"
+                       VerticalOptions="Center"
+                       TextColor="Black"
+                       Grid.Column="0" />
+
+                        <!-- EDITAR -->
+                        <Button Grid.Column="1"
+                        Text="✏️"
+                        FontSize="18"
+                        Command="{Binding BindingContext.EditCommand,
+                                          Source={x:Reference SettingsPageRoot}}"
+                        CommandParameter="{Binding .}" />
+
+                        <!-- ELIMINAR -->
+                        <Button Grid.Column="2"
+                        Text="🗑️"
+                        FontSize="18"
+                        Command="{Binding BindingContext.DeleteCommand,
+                                          Source={x:Reference SettingsPageRoot}}"
+                        CommandParameter="{Binding .}" />
+                    </Grid>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

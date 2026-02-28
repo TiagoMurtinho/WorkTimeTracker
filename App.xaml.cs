@@ -13,8 +13,8 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        var repository = new WorkTimeRepository(Path.Combine(FileSystem.AppDataDirectory, "worktracker.db3"));
-        var mainViewModel = new MainPageViewModel(repository);
-        return new Window(new MainPage(mainViewModel));
+        WorkTimeRepository repository = new(Path.Combine(FileSystem.AppDataDirectory, "worktracker.db3"));
+        MainPageViewModel mainViewModel = new(repository);
+        return new Window(new MainFlyoutPage(mainViewModel, repository));
     }
 }
