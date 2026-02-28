@@ -25,6 +25,11 @@ A simple, offline Android app built with .NET MAUI for tracking work hours. Desi
   - Displays all days in the month  
   - Days with work sessions are visually highlighted  
   - Selecting a day opens a popup summary showing hours worked and total earnings  
+  - **Monthly summary button** shows a popup with all days’ totals and monthly total  
+  - **Export options** from the monthly summary:  
+    - Share summary via **WhatsApp**  
+    - Export to **PDF**  
+    - Export to **Excel**
 
 - **Real-time updates**  
   - Date and time update every second  
@@ -33,7 +38,7 @@ A simple, offline Android app built with .NET MAUI for tracking work hours. Desi
 - **MVVM Architecture**  
   - `MainPageViewModel` handles timer logic, date/time, and button state  
   - `SettingsPageViewModel` handles WorkTypes CRUD  
-  - `ManagementPageViewModel` handles calendar days, highlighting, and daily summaries  
+  - `ManagementPageViewModel` handles calendar days, highlighting, daily summaries, monthly summary, and export logic  
   - Bindings use `x:DataType` for compiled bindings and better performance  
 
 ## Technical Stack
@@ -43,6 +48,7 @@ A simple, offline Android app built with .NET MAUI for tracking work hours. Desi
 - Local SQLite database for WorkTypes and WorkSessions  
 - Modern UI with `Border`, large typography, and stylized buttons  
 - Fully offline, no authentication, no cloud  
+- Export via **WhatsApp**, **PDF**, and **Excel**  
 
 ## Project Structure
 
