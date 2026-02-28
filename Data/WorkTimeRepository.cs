@@ -43,9 +43,10 @@ public class WorkTimeRepository
     public Task<List<WorkSession>> GetWorkSessionsAsync(DateTime start, DateTime end)
     {
         return _database.Table<WorkSession>()
-                        .Where(ws => ws.StartTime >= start && ws.StartTime <= end)
-                        .ToListAsync();
+            .Where(ws => ws.StartTime >= start && ws.StartTime < end)
+            .ToListAsync();
     }
+
     public Task<int> AddWorkSessionAsync(WorkSession session) => _database.InsertAsync(session);
 
     // -------------------------

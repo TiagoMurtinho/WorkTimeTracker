@@ -8,6 +8,7 @@ public partial class MainPage : ContentPage
 {
     private readonly MainPageViewModel _viewModel;
     private readonly WorkTimeRepository _repository;
+    public event EventHandler? OnWorkSessionSaved;
 
     public MainPage(MainPageViewModel viewModel, WorkTimeRepository repository)
     {
@@ -57,5 +58,7 @@ public partial class MainPage : ContentPage
             TotalValue = totalValue,
             WorkTypeId = selectedType.Id
         });
+
+        OnWorkSessionSaved?.Invoke(this, EventArgs.Empty);
     }
 }
