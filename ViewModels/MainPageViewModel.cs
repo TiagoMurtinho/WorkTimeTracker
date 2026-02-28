@@ -7,7 +7,7 @@ namespace WorkTimeTracker.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject
 {
-    private WorkTimeRepository _workTimeRepository;
+    private readonly WorkTimeRepository _workTimeRepository;
     private readonly Timer _timer;
     private DateTime _startTime;
 
@@ -23,13 +23,16 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private bool _isRunning;
 
+    public DateTime StartTime => _startTime;
+
     public MainPageViewModel(WorkTimeRepository workTimeRepository)
     {
         _workTimeRepository = workTimeRepository;
+
         _dateText = DateTime.Now.ToString("dd MMM yyyy");
         _timeText = DateTime.Now.ToString("HH:mm:ss");
-    
-        _timer = new System.Timers.Timer(1000);
+
+        _timer = new Timer(1000);
         _timer.Elapsed += (s, e) =>
         {
             ElapsedTime = DateTime.Now - _startTime;
@@ -42,11 +45,13 @@ public partial class MainPageViewModel : ObservableObject
         if (IsRunning)
         {
             StopTimer();
+            OnTimerStopped?.Invoke(this, EventArgs.Empty);
         }
         else
         {
             StartTimer();
         }
+
         OnPropertyChanged(nameof(ButtonText));
         OnPropertyChanged(nameof(ButtonColor));
     }
@@ -72,4 +77,7 @@ public partial class MainPageViewModel : ObservableObject
         DateText = DateTime.Now.ToString("dd MMM yyyy");
         TimeText = DateTime.Now.ToString("HH:mm:ss");
     }
+
+    // Evento que a View escuta para abrir modal
+    public event EventHandler? OnTimerStopped;
 }

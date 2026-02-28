@@ -11,4 +11,7 @@ public class WorkType
 
     [NotNull]
     public string Name { get; set; } = string.Empty;
+
+    [NotNull]
+    public decimal HourlyRate { get; set; } = decimal.Zero;
 }

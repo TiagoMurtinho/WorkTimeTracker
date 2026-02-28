@@ -1,13 +1,49 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:WorkTimeTracker.ViewModels"
+             xmlns:models="clr-namespace:WorkTimeTracker.Models"
              x:Class="WorkTimeTracker.Views.ManagementPage"
+             x:DataType="vm:ManagementPageViewModel"
              Title="Gestão"
              BackgroundColor="White">
 
-    <VerticalStackLayout Padding="20" Spacing="20">
-        <Label Text="Gestão" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
-        <Label Text="Aqui você pode gerenciar tarefas ou registros de tempo." FontSize="18" />
-        <!-- Adicione controles de gestão conforme necessário -->
+    <VerticalStackLayout Padding="10" Spacing="10">
+
+        <!-- Mostra o mês -->
+        <Label Text="{Binding CurrentMonth, StringFormat='MMMM yyyy'}"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+
+        <!-- Calendar -->
+        <CollectionView x:Name="CalendarCollectionView"
+                        ItemsSource="{Binding Days}" 
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedDay, Mode=TwoWay}">
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="7"/>
+                <!-- 7 dias por semana -->
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:CalendarDay">
+
+                    <Border Padding="5"
+                            Margin="2"
+                            Stroke="{Binding HasSessions, Converter={StaticResource BoolToColorConverter}}"
+                            Background="{Binding HasSessions, Converter={StaticResource BoolToBackgroundConverter}}"
+                            StrokeShape="RoundRectangle 5">
+
+                        <Label Text="{Binding Date.Day}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+
+                    </Border>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
     </VerticalStackLayout>
 </ContentPage>

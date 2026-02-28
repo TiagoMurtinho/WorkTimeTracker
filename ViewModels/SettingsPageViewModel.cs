@@ -56,32 +56,56 @@ public class SettingsPageViewModel : BaseViewModel
 
     private async Task ShowWorkTypeModal(WorkType? workType)
     {
-        string title = workType == null ? "Criar WorkType" : "Editar WorkType";
-        string currentName = workType?.Name ?? "";
+        bool isNew = workType == null;
 
-        string? result = await _page.DisplayPromptAsync(
+        string title = isNew ? "Criar trabalho" : "Editar trabalho";
+
+        // NOME
+        string? name = await _page.DisplayPromptAsync(
             title,
-            "Digite o nome:",
-            initialValue: currentName,
+            "Nome do trabalho:",
+            initialValue: workType?.Name ?? "",
             maxLength: 50,
             keyboard: Keyboard.Text);
 
-        if (string.IsNullOrWhiteSpace(result))
+        if (string.IsNullOrWhiteSpace(name))
             return;
 
-        if (workType == null)
+        // SALÁRIO
+        string? rateText = await _page.DisplayPromptAsync(
+            title,
+            "Salário por hora (€):",
+            initialValue: workType?.HourlyRate.ToString("F2") ?? "0.00",
+            keyboard: Keyboard.Numeric);
+
+        if (string.IsNullOrWhiteSpace(rateText))
+            return;
+
+        if (!decimal.TryParse(rateText.Replace(',', '.'),
+            System.Globalization.NumberStyles.Any,
+            System.Globalization.CultureInfo.InvariantCulture,
+            out decimal hourlyRate))
         {
-            var newType = new WorkType { Name = result };
+            await _page.DisplayAlert("Erro", "Salário inválido.", "OK");
+            return;
+        }
+
+        if (isNew)
+        {
+            var newType = new WorkType
+            {
+                Name = name,
+                HourlyRate = hourlyRate
+            };
+
             await _repository.AddWorkTypeAsync(newType);
-
-            var inserted = await _repository.GetWorkTypesAsync();
-            newType.Id = inserted.Last().Id;
-
             WorkTypes.Add(newType);
         }
         else
         {
-            workType.Name = result;
+            workType!.Name = name;
+            workType.HourlyRate = hourlyRate;
+
             await _repository.UpdateWorkTypeAsync(workType);
 
             int index = WorkTypes.IndexOf(workType);

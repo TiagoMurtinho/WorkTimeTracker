@@ -17,5 +17,8 @@ public class WorkSession
     public int DurationMinutes { get; set; }
 
     [NotNull]
+    public decimal TotalValue { get; set; }
+
+    [NotNull]
     public int WorkTypeId { get; set; }
 }

@@ -6,12 +6,14 @@ namespace WorkTimeTracker.Views;
 public partial class MainFlyoutPage : FlyoutPage
 {
     private readonly WorkTimeRepository _workTimeRepository;
+    private readonly ManagementPageViewModel _managementPageViewModel;
 
-    public MainFlyoutPage(MainPageViewModel mainViewModel, WorkTimeRepository workTimeRepository)
+    public MainFlyoutPage(MainPageViewModel mainViewModel, WorkTimeRepository workTimeRepository, ManagementPageViewModel managementPageViewModel)
     {
         InitializeComponent();
-        Detail = new NavigationPage(new MainPage(mainViewModel));
         _workTimeRepository = workTimeRepository;
+        Detail = new NavigationPage(new MainPage(mainViewModel, _workTimeRepository));
+        _managementPageViewModel = managementPageViewModel;
     }
 
     // Evento para abrir SettingsPage
@@ -25,6 +27,6 @@ public partial class MainFlyoutPage : FlyoutPage
     private async void OnManagementClicked(object sender, EventArgs e)
     {
         IsPresented = false;
-        await Detail.Navigation.PushAsync(new ManagementPage());
+        await Detail.Navigation.PushAsync(new ManagementPage(_managementPageViewModel));
     }
 }

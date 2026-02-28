@@ -9,6 +9,11 @@ public class WorkTimeRepository
 
     public WorkTimeRepository(string dbPath)
     {
+    #if DEBUG
+        if (File.Exists(dbPath))
+            File.Delete(dbPath);
+    #endif
+
         _database = new SQLiteAsyncConnection(dbPath);
 
         // Criação das tabelas
@@ -20,6 +25,13 @@ public class WorkTimeRepository
     // -------------------------
     // WorkType CRUD
     // -------------------------
+    public async Task<string> GetWorkTypeNameById(int id)
+    {
+        WorkType type = await _database.Table<WorkType>()
+                                   .Where(wt => wt.Id == id)
+                                   .FirstOrDefaultAsync();
+        return type?.Name ?? "Desconhecido";
+    }
     public Task<List<WorkType>> GetWorkTypesAsync() => _database.Table<WorkType>().ToListAsync();
     public Task<int> AddWorkTypeAsync(WorkType type) => _database.InsertAsync(type);
     public Task<int> UpdateWorkTypeAsync(WorkType type) => _database.UpdateAsync(type);
@@ -28,7 +40,12 @@ public class WorkTimeRepository
     // -------------------------
     // WorkSession CRUD
     // -------------------------
-    public Task<List<WorkSession>> GetWorkSessionsAsync() => _database.Table<WorkSession>().ToListAsync();
+    public Task<List<WorkSession>> GetWorkSessionsAsync(DateTime start, DateTime end)
+    {
+        return _database.Table<WorkSession>()
+                        .Where(ws => ws.StartTime >= start && ws.StartTime <= end)
+                        .ToListAsync();
+    }
     public Task<int> AddWorkSessionAsync(WorkSession session) => _database.InsertAsync(session);
 
     // -------------------------

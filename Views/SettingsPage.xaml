@@ -28,11 +28,16 @@
 
                     <Grid Padding="10" ColumnDefinitions="*,Auto,Auto">
 
-                        <!-- NOME -->
-                        <Label Text="{Binding Name}"
-                       VerticalOptions="Center"
-                       TextColor="Black"
-                       Grid.Column="0" />
+                        <!-- NOME E SALÁRIO -->
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Name}"
+                                   FontAttributes="Bold"
+                                   TextColor="Black" />
+    
+                            <Label Text="{Binding HourlyRate, StringFormat='€ {0:F2} / h'}"
+                                   FontSize="12"
+                                   TextColor="Gray" />
+                        </VerticalStackLayout>
 
                         <!-- EDITAR -->
                         <Button Grid.Column="1"

@@ -15,6 +15,7 @@ public partial class App : Application
     {
         WorkTimeRepository repository = new(Path.Combine(FileSystem.AppDataDirectory, "worktracker.db3"));
         MainPageViewModel mainViewModel = new(repository);
-        return new Window(new MainFlyoutPage(mainViewModel, repository));
+        ManagementPageViewModel managementPageViewModel = new(repository);
+        return new Window(new MainFlyoutPage(mainViewModel, repository, managementPageViewModel));
     }
 }
